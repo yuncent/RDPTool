@@ -24,3 +24,6 @@ g++ RDPTool.cpp -o RDPTool.exe -O2 -mwindows -static -ladvapi32 -lshell32
 
 ### 开源协议
 本项目遵循 MIT License 协议开源。
+
+### 界面预览
+![软件截图](assets/preview.png)
