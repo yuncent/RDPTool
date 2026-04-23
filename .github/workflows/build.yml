@@ -1,1 +1,30 @@
+name: C++ Build
 
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest  # 使用 Windows 虚拟环境
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup MinGW
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
+
+    - name: Compile RDPTool
+      run: |
+        g++ RDPTool.cpp -o RDPTool.exe -O2 -mwindows -static -ladvapi32 -lshell32
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: RDPTool-Binary
+        path: RDPTool.exe
