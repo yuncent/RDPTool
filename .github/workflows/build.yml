@@ -1,4 +1,4 @@
-name: Fast-Build-Win32
+name: Build-Win32
 
 on:
   push:
