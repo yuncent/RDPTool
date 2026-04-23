@@ -1,30 +1,30 @@
-name: C++ Build
+name: Fast-Build-Win32
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: windows-latest  # 使用 Windows 虚拟环境
+  cross-build:
+    # 用 Linux 环境跑 Windows 编译
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup MinGW
-      uses: egor-tensin/setup-mingw@v2
-      with:
-        platform: x64
-
-    - name: Compile RDPTool
+    - name: Install MinGW
       run: |
-        g++ RDPTool.cpp -o RDPTool.exe -O2 -mwindows -static -ladvapi32 -lshell32
+        sudo apt-get update
+        sudo apt-get install -y mingw-w64
 
-    - name: Upload Artifact
+    - name: Compile to .exe
+      # 使用交叉编译器 x86_64-w64-mingw32-g++
+      run: |
+        x86_64-w64-mingw32-g++ RDPTool.cpp -o RDPTool.exe -O2 -mwindows -static -ladvapi32 -lshell32
+
+    - name: Archive Production
       uses: actions/upload-artifact@v4
       with:
-        name: RDPTool-Binary
+        name: RDPTool-Release
         path: RDPTool.exe
